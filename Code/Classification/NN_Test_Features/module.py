@@ -1,21 +1,26 @@
 import numpy as np
 import torch
 from lightning.pytorch.loggers import TensorBoardLogger
+from pytorch_lightning.callbacks import ModelCheckpoint
+from pytorch_lightning.profilers import PyTorchProfiler
 from sklearn.model_selection import train_test_split
 from torch import nn
 import torch.nn.functional as F
+from torch._C._profiler import ProfilerActivity
 from torch.utils.data import DataLoader
 import pytorch_lightning as pl
 import torch.utils.data as data
 import pandas as pd
 from torchmetrics import Accuracy
+from pathlib import Path
 
-path_to_data = "./RED/CYBRES_RED_CH1.csv"
+#path_to_data = "./RED/CYBRES_RED_CH1.csv"
+path_to_data = "./RED"
 
 class LitModule(pl.LightningModule):
     def __init__(self):
         super().__init__()
-        self.model = nn.Sequential(nn.Linear(10, 128), nn.ReLU(), nn.Linear(128, 64), nn.ReLU(), nn.Linear(64, 3))
+        self.model = nn.Sequential(nn.Linear(9, 128), nn.ReLU(), nn.Linear(128, 64), nn.ReLU(), nn.Linear(64, 3))
         self.accuracy = Accuracy(task='multiclass', num_classes=3)
 
     def forward(self, x):
@@ -49,7 +54,12 @@ class LitModule(pl.LightningModule):
 
 class CustomDataset(data.Dataset):
     def __init__(self, csv_file, split, transform=None):
-        self.data = pd.read_csv(csv_file)
+        self.data = pd.DataFrame()
+        for path in Path(csv_file).iterdir():
+            self.helper = pd.read_csv(path, skiprows=0, usecols=range(1, 11))
+            self.data = pd.concat([self.data, self.helper], ignore_index=True)
+        print(self.data)
+        self.data.to_csv('test.csv', index=False)
         self.transform = transform
 
         train_data, test_data = train_test_split(self.data, test_size=0.2, random_state=42)
@@ -83,13 +93,21 @@ train_dataloader = DataLoader(train_dataset, batch_size=16, shuffle=True, num_wo
 val_dataloader = DataLoader(val_dataset, batch_size=16, num_workers=7)
 test_dataloader = DataLoader(test_dataset, batch_size=16, num_workers=7)
 
+checkpoint_callback = ModelCheckpoint(monitor='val_loss', mode='min', save_top_k=1)
+profiler = PyTorchProfiler(activities=[ProfilerActivity.CPU],on_trace_ready=torch.profiler.tensorboard_trace_handler("logs/profiler0"), schedule=torch.profiler.schedule(skip_first=1, wait=1, warmup=1, active=5))
 
 model = LitModule()
 trainer = pl.Trainer(
-    max_epochs=10,
+    max_epochs=15,
     logger=TensorBoardLogger('logs/', name='test_classifier'),
     log_every_n_steps=1,
+    profiler=profiler,
+    callbacks=[checkpoint_callback]
 )
 
 trainer.fit(model, train_dataloader, val_dataloader)
-trainer.test(model, dataloaders=test_dataloader)
+best_model_path = checkpoint_callback.best_model_path
+print(best_model_path)
+best_model = LitModule.load_from_checkpoint(best_model_path)
+trainer.test(best_model, dataloaders=test_dataloader)
+#trainer.test(model, dataloaders=test_dataloader)
