@@ -1,8 +1,5 @@
-from serial_class import PhytNode_Serial
-import threading
 from pyHS100 import SmartPlug
 from datetime import datetime, timedelta
-import time
 
 
 def main():

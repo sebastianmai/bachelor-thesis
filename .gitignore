@@ -2,3 +2,4 @@
 events*
 *.csv
 *.yaml
+*.log

@@ -2,11 +2,9 @@ import numpy as np
 import torch
 from lightning.pytorch.loggers import TensorBoardLogger
 from pytorch_lightning.callbacks import ModelCheckpoint
-from pytorch_lightning.profilers import PyTorchProfiler
 from sklearn.model_selection import train_test_split
 from torch import nn
 import torch.nn.functional as F
-from torch._C._profiler import ProfilerActivity
 from torch.utils.data import DataLoader
 import pytorch_lightning as pl
 import torch.utils.data as data
@@ -16,6 +14,7 @@ from pathlib import Path
 
 #path_to_data = "./RED/CYBRES_RED_CH1.csv"
 path_to_data = "./RED"
+path_to_data = ""
 
 class LitModule(pl.LightningModule):
     def __init__(self):
@@ -94,14 +93,13 @@ val_dataloader = DataLoader(val_dataset, batch_size=16, num_workers=7)
 test_dataloader = DataLoader(test_dataset, batch_size=16, num_workers=7)
 
 checkpoint_callback = ModelCheckpoint(monitor='val_loss', mode='min', save_top_k=1)
-profiler = PyTorchProfiler(activities=[ProfilerActivity.CPU],on_trace_ready=torch.profiler.tensorboard_trace_handler("logs/profiler0"), schedule=torch.profiler.schedule(skip_first=1, wait=1, warmup=1, active=5))
 
 model = LitModule()
 trainer = pl.Trainer(
     max_epochs=15,
     logger=TensorBoardLogger('logs/', name='test_classifier'),
     log_every_n_steps=1,
-    profiler=profiler,
+    profiler="simple",
     callbacks=[checkpoint_callback]
 )
 
