@@ -139,7 +139,7 @@ class Cybres_MU:
         # 1 - Impedance spectroscopy (Allows for upper and lower limit to be set)
         # 5 - FRP (10 Hz- 120 kHz)
         # 6 - continuous FRP (10 Hz to 450 Hz)
-        self.ser.write(b",yn6*")
+        self.ser.write(b",yn3*")
 
         self.ser.write(b",yl004500*")              # lower bound frequency needs 6 digits else error
         self.ser.write(b",yr0000100*")             # step frequency taken  needs 7 digits else error

@@ -13,7 +13,7 @@ from mu_interface.Utilities.log_formatter import setup_logger
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Arguments for the sensor node.")
-    parser.add_argument('--port', action='store', default='/dev/ttyACM1',
+    parser.add_argument('--port', action='store', default='/dev/ttyACM0',
         help="Port where the measurement unit is connected.")
     parser.add_argument('--baud', action='store', type=int, default=460800,
         help="Baudrate for communicating with the measurement unit.")

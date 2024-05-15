@@ -57,7 +57,7 @@ class Sensor_Node:
         Start the measurements. Continue to publish over MQTT and store to csv.
         """
         
-        self.file_path = Path(f"{str(self.file_path)} ({self.mu_settings.get('dev_ID', 'ID NA')})")
+        self.file_path = Path(f"{str(self.file_path)}")
 
         # Measure at set interval.
         response = self.mu.set_measurement_interval(self.measurment_interval)
@@ -172,7 +172,7 @@ class Sensor_Node:
             payload = payload + additionalValues
 
         header = (self.hostname, messagetype, bool(self.additionalSensors))
-        logging.info(payload)
+        #logging.info(payload)
         return header, payload
 
     def transform_data(self, string_data):
