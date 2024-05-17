@@ -8,5 +8,5 @@ scripts=(
 )
 
 for script in "${scripts[@]}"; do
-    gnome-terminal -- bash -c "python3 $script; exec bash"
+    lxterminal -e "bash -c 'python3 $script; exec bash'" &
 done

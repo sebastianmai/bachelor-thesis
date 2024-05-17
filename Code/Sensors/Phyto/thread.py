@@ -3,14 +3,14 @@ import threading
 
 def main():
     PN_1 = PhytNode_Serial("/dev/ttyACM0", 1)
-    #PN_2 = PhytNode_Serial("/dev/ttyACM2", 2)
+    PN_2 = PhytNode_Serial("/dev/ttyACM2", 2)
     #PN_controll = PhytNode_Serial("/dev/ttyACM3", 9)
     thread_PN_1 = threading.Thread(target=PN_1.write2csv_thread)
-    #thread_PN_2 = threading.Thread(target=PN_2.write2csv_thread)
+    thread_PN_2 = threading.Thread(target=PN_2.write2csv_thread)
     #thread_P_controll = threading.Thread(target=PN_controll.write2csv_thread)
 
     thread_PN_1.start()
-    #thread_PN_2.start()
+    thread_PN_2.start()
     #thread_P_controll.start()
 
     #thread_PN_1.join()

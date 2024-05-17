@@ -1,4 +1,6 @@
-from pyHS100 import SmartPlug
+import asyncio
+
+from kasa import SmartPlug
 from datetime import datetime, timedelta
 import pandas as pd
 import os
@@ -16,19 +18,58 @@ scaling_factors = {
     "soil_temperature": lambda t: t / 10
 }
 
-def main():
+async def main():
     WP03 = "134.34.225.167"  # 70-4F-57-FF-AE-F5
     plug = WP03
     growLight = SmartPlug(plug)
-    growLight.turn_off()
+    await growLight.turn_off()
 
     wait_time = datetime.now()
-    #start_temp = get_temp(0)
+    start_temp = get_temp(0)
 
-    while (True):
-
+    while True:
         current_time = datetime.now()
 
+        specific_times = [
+            (8, 0),
+            (10, 10),
+            (12, 20),
+            (14, 30),
+            (16, 40),
+            (18, 50),
+        ]
+
+        for hour, minute in specific_times:
+            if current_time.hour == hour and minute == current_time.minute:
+                print('Time found')
+                wait_time = datetime.now()
+                start_temp = get_temp(0)
+
+                while True:
+                    current_time = datetime.now()
+
+                    if wait_time + timedelta(minutes=60) < current_time <= wait_time + timedelta(hours=1, minutes=10):
+                        current_temp = get_temp(-1)
+
+                        if current_temp[2] <= start_temp[2] + 6:
+                            await growLight.turn_on()
+                            time.sleep(3)
+                        elif current_temp[2] <= start_temp[2] + 6:
+                            await growLight.turn_off()
+                            time.sleep(3)
+                    elif wait_time + timedelta(hours=1, minutes=10) < current_time <= (
+                            wait_time + timedelta(hours=2, minutes=10)):
+                        await growLight.turn_off()
+
+                    if current_time >= (wait_time + timedelta(hours=2, minutes=10)):
+                        print('Broken')
+                        break
+
+                print('Searching')
+
+    '''while (True):
+
+        current_time = datetime.now()
         if wait_time + timedelta(minutes=10) < current_time <= wait_time + timedelta(minutes=20):
             current_temp = get_temp(-1)
             print(current_temp[0], current_temp[1], current_temp[2], current_temp[3])
@@ -40,24 +81,25 @@ def main():
         elif current_time > (wait_time + timedelta(minutes=20)):
             print("Exit the code")
             break
+        
 
-        '''
+
         if wait_time + timedelta(minutes=10) < current_time <= wait_time + timedelta(minutes=20):
             current_temp = get_temp(-1)
             print(current_temp[0], current_temp[1], current_temp[2], current_temp[3])
 
-            if current_temp <= start_temp + 7:
+            if current_temp[2] <= start_temp[2] + 6:
                 growLight.turn_on()
                 time.sleep(1)
-            elif current_temp > start_temp + 7:
+            elif current_temp[2] > start_temp[2] + 6:
                 growLight.turn_off()
                 time.sleep(1)
         elif wait_time + timedelta(minutes=20) < current_time <= (wait_time + timedelta(minutes=30)):
             growLight.turn_off()
         elif current_time > (wait_time + timedelta(minutes=20)):
-            break'''
+            break
 
-        '''current_time = datetime.now()
+        current_time = datetime.now()
 
         if wait_time + timedelta(minutes=5) >= current_time:
             growLight.turn_off()
@@ -69,13 +111,13 @@ def main():
         else:
             growLight.turn_off()
             time.sleep(1)
-            exit(1)'''
+            exit(1)
 
-        '''if current_temp[3] >= 45 or current_temp[1] >= 40:
+        if current_temp[3] >= 45 or current_temp[1] >= 40:
             growLight.turn_off()
             time.sleep(1)
-            exit(1)'''
-
+            exit(1)
+        '''
 
 
 def get_temp(position):
@@ -94,5 +136,4 @@ def get_temp(position):
     return (last_temp_T1_leaf, last_temp_T1_air, last_temp_T2_leaf, last_temp_T2_air)
 
 if __name__ == '__main__':
-    main()
-    exit(1)
+    asyncio.run(main())
