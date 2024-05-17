@@ -19,7 +19,7 @@ if __name__ == "__main__":
         help="Baudrate for communicating with the measurement unit.")
     parser.add_argument('--baud2', action='store', type=int, default=115200,
         help="Backup baudrate if the main one fails.")
-    parser.add_argument('--int', action='store', type=int, default=10000,
+    parser.add_argument('--int', action='store', type=int, default=1000,
         help="Time interval between two measurements (in miliseconds).")
     parser.add_argument('--addr', action='store', default='localhost',
         help="Address of the MQTT subscriber. Can be IP, localhost, *.local, etc.")

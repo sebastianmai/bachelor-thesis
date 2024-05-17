@@ -23,49 +23,76 @@ def main():
     growLight.turn_off()
 
     wait_time = datetime.now()
-    start_temp = get_temp(0)
+    #start_temp = get_temp(0)
 
     while (True):
 
-        '''current_time = datetime.now()
+        current_time = datetime.now()
 
-        if wait_time + timedelta(minutes=5) < current_time <= wait_time + timedelta(minutes=15):
+        if wait_time + timedelta(minutes=10) < current_time <= wait_time + timedelta(minutes=20):
             current_temp = get_temp(-1)
-            print(current_temp, start_temp, start_temp + 5)
+            print(current_temp[0], current_temp[1], current_temp[2], current_temp[3])
+            growLight.turn_on()
+            time.sleep(1)
+        elif wait_time + timedelta(minutes=20) < current_time <= (wait_time + timedelta(minutes=30)):
+            print("Turned off")
+            growLight.turn_off()
+        elif current_time > (wait_time + timedelta(minutes=20)):
+            print("Exit the code")
+            break
 
-            if current_temp <= start_temp + 5:
+        '''
+        if wait_time + timedelta(minutes=10) < current_time <= wait_time + timedelta(minutes=20):
+            current_temp = get_temp(-1)
+            print(current_temp[0], current_temp[1], current_temp[2], current_temp[3])
+
+            if current_temp <= start_temp + 7:
                 growLight.turn_on()
                 time.sleep(1)
-            elif current_temp > start_temp + 5:
+            elif current_temp > start_temp + 7:
                 growLight.turn_off()
                 time.sleep(1)
-        elif wait_time + timedelta(minutes=15) < current_time <= (wait_time + timedelta(minutes=20)):
+        elif wait_time + timedelta(minutes=20) < current_time <= (wait_time + timedelta(minutes=30)):
             growLight.turn_off()
         elif current_time > (wait_time + timedelta(minutes=20)):
             break'''
 
-        current_temp = get_temp(-1)
-        print(current_temp)
-        growLight.turn_on()
+        '''current_time = datetime.now()
 
-        if current_temp == 40:
+        if wait_time + timedelta(minutes=5) >= current_time:
             growLight.turn_off()
             time.sleep(1)
-            exit(1)
+        elif wait_time + timedelta(minutes=5) < current_time <= wait_time + timedelta(minutes=15):
+            current_temp = get_temp(-1)
+            print(current_temp[0], current_temp[1], current_temp[2], current_temp[3])
+            growLight.turn_on()
+        else:
+            growLight.turn_off()
+            time.sleep(1)
+            exit(1)'''
+
+        '''if current_temp[3] >= 45 or current_temp[1] >= 40:
+            growLight.turn_off()
+            time.sleep(1)
+            exit(1)'''
 
 
 
 def get_temp(position):
-    folder_path = '/home/pi/measurements/'
+    folder_path = '/home/pi/Measurements/P6'
     files = os.listdir(folder_path)
     full_name = [os.path.join(folder_path, file) for file in files]
     sorted_files = sorted(full_name, key=os.path.getmtime, reverse=True)
-    data_cybres = pd.read_csv(sorted_files[0])
+    temp = pd.read_csv(sorted_files[0])
 
     #data_cybres["temp_external"] = scaling_factors["temp_external"](data_cybres["temp_external"])
-    last_temp = data_cybres["temp_external"].iloc[position]
+    last_temp_T1_leaf = temp["T1_leaf"].iloc[position]
+    last_temp_T2_leaf = temp["T2_leaf"].iloc[position]
+    last_temp_T1_air = temp["T1_air"].iloc[position]
+    last_temp_T2_air = temp["T2_air"].iloc[position]
 
-    return last_temp
+    return (last_temp_T1_leaf, last_temp_T1_air, last_temp_T2_leaf, last_temp_T2_air)
 
 if __name__ == '__main__':
     main()
+    exit(1)

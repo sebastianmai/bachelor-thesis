@@ -23,7 +23,8 @@ class data2csv:
         "differential_potential_CH1": (lambda d, c: (d[c] - 512000) / 1000),              # Mili Volts
         "differential_potential_CH2": (lambda d, c: (d[c] - 512000) / 1000),              # Mili Volts
         "transpiration": (lambda d, c: d[c] / 1000),                                      # Percent
-        "RMS_CH1": (lambda d, c: d[c] * 0.000000095427163),                               # Mili Ohm
+        "RMS_CH1": (lambda d, c: d[c] * 0.000000095427163),
+        "RMS_CH2": (lambda d, c: d[c] * 0.000000095427163),
         "sweep_freq": (lambda d, c: d[c] / 10)                                           # Hz
     }
 
