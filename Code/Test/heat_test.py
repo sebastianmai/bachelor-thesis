@@ -55,10 +55,10 @@ df_phyto21 = pd.read_csv(csv_phyto21, usecols=["timestamp", "Ch1"])'''
 #csv_temp = "/home/basti/DATEN/Universität/Bachelor/Thesis/bachelor-thesis/Data/Test_measurement_heat/07/P6_2024-05-17 14:59:41:413469.csv"
 
 #08
-csv_cybres = "/home/basti/DATEN/Universität/Bachelor/Thesis/bachelor-thesis/Data/Test_measurement_heat/08/ACM0_2024-05-17_15:34:07.csv"
-csv_phyto1 = "/home/basti/DATEN/Universität/Bachelor/Thesis/bachelor-thesis/Data/Test_measurement_heat/08/P1_2024-05-17 15:34:00:820.csv"
-csv_phyto2 = "/home/basti/DATEN/Universität/Bachelor/Thesis/bachelor-thesis/Data/Test_measurement_heat/08/P2_2024-05-17 15:34:00:798.csv"
-csv_temp = "/home/basti/DATEN/Universität/Bachelor/Thesis/bachelor-thesis/Data/Test_measurement_heat/08/P6_2024-05-17 15:34:00:419496.csv"
+#csv_cybres = "/home/basti/DATEN/Universität/Bachelor/Thesis/bachelor-thesis/Data/Test_measurement_heat/08/ACM0_2024-05-17_15:34:07.csv"
+#csv_phyto1 = "/home/basti/DATEN/Universität/Bachelor/Thesis/bachelor-thesis/Data/Test_measurement_heat/08/P1_2024-05-17 15:34:00:820.csv"
+#csv_phyto2 = "/home/basti/DATEN/Universität/Bachelor/Thesis/bachelor-thesis/Data/Test_measurement_heat/08/P2_2024-05-17 15:34:00:798.csv"
+#csv_temp = "/home/basti/DATEN/Universität/Bachelor/Thesis/bachelor-thesis/Data/Test_measurement_heat/08/P6_2024-05-17 15:34:00:419496.csv"
 
 #control_measure_01
 #csv_cybres = "/home/basti/DATEN/Universität/Bachelor/Thesis/bachelor-thesis/Data/Test_measurement_heat/control_measure/ACM0_2024-05-16_11:37:45.csv"
@@ -86,46 +86,90 @@ csv_temp = "/home/basti/DATEN/Universität/Bachelor/Thesis/bachelor-thesis/Data/
 #csv_temp = "/home/basti/DATEN/Universität/Bachelor/Thesis/bachelor-thesis/Data/Test_measurement_heat/control_measure_04/P6_2024-05-16 16:41:23:434158.csv"
 
 
-df_cybres = pd.read_csv(csv_cybres, usecols=["datetime", "RMS_CH1", "RMS_CH2", "temp_external"])
-df_phyto1 = pd.read_csv(csv_phyto1, usecols=["timestamp", "Ch1"])
-df_phyto2 = pd.read_csv(csv_phyto2, usecols=["timestamp", "Ch1"])
-df_temp = pd.read_csv(csv_temp)
+#df_cybres = pd.read_csv(csv_cybres, usecols=["datetime", "RMS_CH1", "RMS_CH2", "temp_external"])
+#df_phyto1 = pd.read_csv(csv_phyto1, usecols=["timestamp", "Ch1"])
+#df_phyto2 = pd.read_csv(csv_phyto2, usecols=["timestamp", "Ch1"])
+#df_temp = pd.read_csv(csv_temp)
 
 
 #df_cybres = pd.concat([df_cybres, df_cybres1])
 #df_phyto1 = pd.concat([df_phyto1, df_phyto11])
 #df_phyto2 = pd.concat([df_phyto2, df_phyto21])
-print(df_cybres)
+#print(df_cybres)
 
 #df_phyto1 = df_phyto1.iloc[::100, :]
 #df_phyto2 = df_phyto2.iloc[::100, :]
 #df_temp = df_temp.iloc[::100, :]
 
+base_path = "/home/basti/DATEN/Universität/Bachelor/Thesis/bachelor-thesis/Data/Test_measurement_heat/Long"
+'''files = [
+    f"{base_path}/ACM0_2024-05-17_16:40:10.csv",
+    f"{base_path}/ACM0_2024-05-18_00:00:00.csv",
+    f"{base_path}/ACM0_2024-05-18_12:00:00.csv",
+    f"{base_path}/ACM0_2024-05-19_00:00:00.csv",
+    f"{base_path}/ACM0_2024-05-19_12:00:01.csv",
+    f"{base_path}/ACM0_2024-05-20_00:00:00.csv"
+]'''
 
-df_cybres["datetime"] = pd.to_datetime(df_cybres["datetime"],  format="%Y-%m-%d %H:%M:%S:%f")
+files = [
+    f"{base_path}/P2_2024-05-17 16:40:03:005.csv",
+    f"{base_path}/P2_2024-05-18 00:00:00:103.csv",
+    f"{base_path}/P2_2024-05-18 12:00:00:032.csv",
+    f"{base_path}/P2_2024-05-19 00:00:00:056.csv",
+    f"{base_path}/P2_2024-05-19 12:00:00:046.csv",
+    f"{base_path}/P2_2024-05-20 00:00:00:006.csv"
+]
+
+files1 = [
+    f"{base_path}/P1_2024-05-17 16:40:03:100.csv",
+    f"{base_path}/P1_2024-05-18 00:00:00:034.csv",
+    f"{base_path}/P1_2024-05-18 12:00:00:067.csv",
+    f"{base_path}/P1_2024-05-19 00:00:00:011.csv"
+]
+
+files2 = [
+    f"{base_path}/P6_2024-05-17 16:40:02:530802.csv",
+    f"{base_path}/P6_2024-05-18 00:00:03:884.csv",
+    f"{base_path}/P6_2024-05-18 14:00:00:455.csv",
+    f"{base_path}/P6_2024-05-19 00:00:00:660.csv"
+]
+
+
+dfs = [pd.read_csv(file) for file in files]
+df_phyto2 = pd.concat(dfs, ignore_index=True)
+
+
+dfs = [pd.read_csv(file) for file in files1]
+df_phyto1 = pd.concat(dfs, ignore_index=True)
+
+dfs = [pd.read_csv(file) for file in files2]
+df_temp = pd.concat(dfs, ignore_index=True)
+
+#df_cybres["datetime"] = pd.to_datetime(df_cybres["datetime"],  format="%Y-%m-%d %H:%M:%S:%f")
 df_phyto1["timestamp"] = pd.to_datetime(df_phyto1["timestamp"],  format="%Y-%m-%d %H:%M:%S:%f")
 df_phyto2["timestamp"] = pd.to_datetime(df_phyto2["timestamp"],  format="%Y-%m-%d %H:%M:%S:%f")
 df_temp["timestamp"] = pd.to_datetime(df_temp["timestamp"],  format="%Y-%m-%d %H:%M:%S:%f")
 
-fig, axs = plt.subplots(5, 1, figsize=(20,10), constrained_layout=True)
+fig, axs = plt.subplots(3, 1, figsize=(20,10), constrained_layout=True)
 
 fig.suptitle("Impedance amplitude, bio potentials and temperature over time", fontsize=16, weight='bold')
 
-axs[0].plot(df_cybres["datetime"], df_cybres["RMS_CH1"], color="purple")
-axs[0].set_title("Impedance amplitude of CH1 over time")
-axs[0].set_ylabel("RMS amplitude [$\Omega$]")
+#axs[0].plot(df_cybres["datetime"], df_cybres["RMS_CH1"], color="purple")
+#axs[0].set_title("Impedance amplitude of CH1 over time")
+#axs[0].set_ylabel("RMS amplitude [$\Omega$]")
 
-axs[1].plot(df_cybres["datetime"], df_cybres["RMS_CH2"], color="purple")
-axs[1].set_title("Impedance amplitude of CH2 over time")
-axs[1].set_ylabel("RMS amplitude [$\Omega$]")
+#axs[1].plot(df_cybres["datetime"], df_cybres["RMS_CH2"], color="purple")
+#axs[1].set_title("Impedance amplitude of CH2 over time")
+#axs[1].set_ylabel("RMS amplitude [$\Omega$]")
 
-axs[2].plot(df_phyto1["timestamp"], df_phyto1["Ch1"])
-axs[2].set_title("Bio potential CH1 over time")
-axs[2].set_ylabel("Potential [mV]")
 
-axs[3].plot(df_phyto2["timestamp"], df_phyto2["Ch1"])
-axs[3].set_title("Bio potential CH2 over time")
-axs[3].set_ylabel("Potential [mV]")
+axs[0].plot(df_phyto1["timestamp"], df_phyto1["Ch1"])
+axs[0].set_title("Bio potential CH1 over time")
+axs[0].set_ylabel("Potential [mV]")
+
+axs[1].plot(df_phyto2["timestamp"], df_phyto2["Ch1"])
+axs[1].set_title("Bio potential CH2 over time")
+axs[1].set_ylabel("Potential [mV]")
 
 '''
 axs[3].plot(df_cybres["datetime"], df_cybres["temp_external"], color="red")
@@ -134,42 +178,42 @@ axs[3].set_ylabel("temp [°C]")
 '''
 
 
-axs[4].plot(df_temp["timestamp"], df_temp["T1_leaf"], label="leaf low")
-axs[4].plot(df_temp["timestamp"], df_temp["T2_leaf"], label="leaf high")
-axs[4].plot(df_temp["timestamp"], df_temp["T1_air"], label="air low")
-axs[4].plot(df_temp["timestamp"], df_temp["T2_air"], label="air high")
-axs[4].set_title("Temperature over time")
-axs[4].set_ylabel("temp [°C]")
-axs[4].legend()
+axs[2].plot(df_temp["timestamp"], df_temp["T1_leaf"], label="leaf low")
+axs[2].plot(df_temp["timestamp"], df_temp["T2_leaf"], label="leaf high")
+axs[2].plot(df_temp["timestamp"], df_temp["T1_air"], label="air low")
+axs[2].plot(df_temp["timestamp"], df_temp["T2_air"], label="air high")
+axs[2].set_title("Temperature over time")
+axs[2].set_ylabel("temp [°C]")
+axs[2].legend()
 
-n = 10
+#n = 60
 
-time_after_n_min_cybres = df_cybres["datetime"].min() + pd.Timedelta(minutes=n)
-time_after_n_min_phyto1 = df_phyto1["timestamp"].min() + pd.Timedelta(minutes=n)
-time_after_n_min_phyto2 = df_phyto2["timestamp"].min() + pd.Timedelta(minutes=n)
-time_after_n_min_temp = df_temp["timestamp"].min() + pd.Timedelta(minutes=n)
+#time_after_n_min_cybres = df_cybres["datetime"].min() + pd.Timedelta(minutes=n)
+#time_after_n_min_phyto1 = df_phyto1["timestamp"].min() + pd.Timedelta(minutes=n)
+#time_after_n_min_phyto2 = df_phyto2["timestamp"].min() + pd.Timedelta(minutes=n)
+#time_after_n_min_temp = df_temp["timestamp"].min() + pd.Timedelta(minutes=n)
 
-time_after_n_n_min_cybres = df_cybres["datetime"].min() + pd.Timedelta(minutes=n+n)
-time_after_n_n_min_phyto1 = df_phyto1["timestamp"].min() + pd.Timedelta(minutes=n+n)
-time_after_n_n_min_phyto2 = df_phyto2["timestamp"].min() + pd.Timedelta(minutes=n+n)
-time_after_n_n_min_temp = df_temp["timestamp"].min() + pd.Timedelta(minutes=n+n)
+#time_after_n_n_min_cybres = df_cybres["datetime"].min() + pd.Timedelta(minutes=n+10)
+#time_after_n_n_min_phyto1 = df_phyto1["timestamp"].min() + pd.Timedelta(minutes=n+n)
+#time_after_n_n_min_phyto2 = df_phyto2["timestamp"].min() + pd.Timedelta(minutes=n+n)
+#time_after_n_n_min_temp = df_temp["timestamp"].min() + pd.Timedelta(minutes=n+n)
 
-axs[0].axvline(time_after_n_min_cybres, color='r', linestyle='--')
-axs[1].axvline(time_after_n_min_cybres, color='r', linestyle='--')
-axs[2].axvline(time_after_n_min_phyto1, color='r', linestyle='--')
-axs[3].axvline(time_after_n_min_phyto2, color='r', linestyle='--')
-axs[4].axvline(time_after_n_min_temp, color='r', linestyle='--')
+#axs[0].axvline(time_after_n_min_cybres, color='r', linestyle='--')
+#axs[1].axvline(time_after_n_min_cybres, color='r', linestyle='--')
+#axs[2].axvline(time_after_n_min_phyto1, color='r', linestyle='--')
+#axs[3].axvline(time_after_n_min_phyto2, color='r', linestyle='--')
+#axs[4].axvline(time_after_n_min_temp, color='r', linestyle='--')
 
-axs[0].axvline(time_after_n_n_min_cybres, color='r', linestyle='--')
-axs[1].axvline(time_after_n_n_min_cybres, color='r', linestyle='--')
-axs[2].axvline(time_after_n_n_min_phyto1, color='r', linestyle='--')
-axs[3].axvline(time_after_n_n_min_phyto2, color='r', linestyle='--')
-axs[4].axvline(time_after_n_n_min_temp, color='r', linestyle='--')
+#axs[0].axvline(time_after_n_n_min_cybres, color='r', linestyle='--')
+#axs[1].axvline(time_after_n_n_min_cybres, color='r', linestyle='--')
+#axs[2].axvline(time_after_n_n_min_phyto1, color='r', linestyle='--')
+#axs[3].axvline(time_after_n_n_min_phyto2, color='r', linestyle='--')
+#axs[4].axvline(time_after_n_n_min_temp, color='r', linestyle='--')
 
 for ax in axs:
     ax.xaxis.set_major_locator(plt.MaxNLocator(5))
     ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d %H:%M:%S"))
-plt.savefig("/home/basti/DATEN/Universität/Bachelor/Thesis/bachelor-thesis/RESULTS/Plots/heat_test_08.pdf", format="pdf")
+plt.savefig("/home/basti/DATEN/Universität/Bachelor/Thesis/bachelor-thesis/RESULTS/Plots/heat_test_long_phyto.pdf", format="pdf")
 plt.show()
 
 

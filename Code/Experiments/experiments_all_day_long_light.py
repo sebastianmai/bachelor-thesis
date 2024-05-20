@@ -1,18 +1,30 @@
-from pyHS100 import SmartPlug
+import asyncio
+
+from kasa import SmartPlug
 from datetime import datetime, timedelta
 
 
-def main():
+async def main():
     WP03 = "134.34.225.167"  # 70-4F-57-FF-AE-F5
     # WP00 = "134.34.225.132"  # D8-0D-17-5c-FC-93
     plug = WP03
     # plug = WP00
     growLight = SmartPlug(plug)
-    growLight.turn_off()
+    await growLight.turn_off()
+    wait_time = datetime.now()
 
     while (True):
         current_time = datetime.now()
 
+        if wait_time + timedelta(minutes=10) < current_time <= wait_time + timedelta(minutes=20):
+            await growLight.turn_on()
+        elif wait_time + timedelta(minutes=20) < current_time < (
+                wait_time + timedelta(minutes=30)):
+            await growLight.turn_off()
+
+        if current_time >= (wait_time + timedelta(minutes=30)):
+            break
+        '''
         if 8 <= current_time.hour <= 22:
 
             specific_times = [
@@ -40,7 +52,9 @@ def main():
 
                         if current_time >= (wait_time + timedelta(hours=2, minutes=10)):
                             break
+            '''
 
 
 if __name__ == '__main__':
-    main()
+    asyncio.run(main())
+    exit(1)

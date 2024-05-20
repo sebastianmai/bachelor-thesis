@@ -51,7 +51,7 @@ while True:  # loop to read the data from the ports
         Specific_directory = directory + file_prefix
 
         current_time = datetime.now()
-        if current_time.hour in {0, 14} and current_time.hour != last_csv_time.hour:  # create new file every 12 hours
+        if current_time.hour in {0, 12} and current_time.hour != last_csv_time.hour:  # create new file every 12 hours
             last_csv_time = datetime.now()
             start_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f")
             file_path = os.path.join(Specific_directory, f'{file_prefix}_{start_timestamp}.csv')
