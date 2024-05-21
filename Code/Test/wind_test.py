@@ -30,6 +30,11 @@ csv_cybres = "/home/basti/DATEN/Universität/Bachelor/Thesis/bachelor-thesis/Dat
 csv_phyto1 = "/home/basti/DATEN/Universität/Bachelor/Thesis/bachelor-thesis/Data/Test_measurement_wind/05/P1_2024-05-20 15:52:45:532.csv"
 csv_phyto2 = "/home/basti/DATEN/Universität/Bachelor/Thesis/bachelor-thesis/Data/Test_measurement_wind/05/P2_2024-05-20 15:52:45:437.csv"
 
+#06
+csv_cybres = "/home/basti/DATEN/Universität/Bachelor/Thesis/bachelor-thesis/Data/Test_measurement_wind/06/ACM0_2024-05-21_11:25:27.csv"
+csv_phyto1 = "/home/basti/DATEN/Universität/Bachelor/Thesis/bachelor-thesis/Data/Test_measurement_wind/06/P1_2024-05-21 11:25:19:538.csv"
+csv_phyto2 = "/home/basti/DATEN/Universität/Bachelor/Thesis/bachelor-thesis/Data/Test_measurement_wind/06/P2_2024-05-21 11:25:19:409.csv"
+
 df_cybres = pd.read_csv(csv_cybres, usecols=["datetime", "RMS_CH1", "RMS_CH2", "temp_external"])
 df_phyto1 = pd.read_csv(csv_phyto1, usecols=["timestamp", "Ch1"])
 df_phyto2 = pd.read_csv(csv_phyto2, usecols=["timestamp", "Ch1"])
@@ -79,5 +84,5 @@ axs[3].axvline(time_after_n_n_min_phyto2, color='r', linestyle='--')
 for ax in axs:
     ax.xaxis.set_major_locator(plt.MaxNLocator(5))
     ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d %H:%M:%S"))
-plt.savefig("/home/basti/DATEN/Universität/Bachelor/Thesis/bachelor-thesis/RESULTS/Plots/wind_test_05.pdf", format="pdf")
+plt.savefig("/home/basti/DATEN/Universität/Bachelor/Thesis/bachelor-thesis/RESULTS/Plots/wind_test_06.pdf", format="pdf")
 plt.show()

@@ -4,18 +4,16 @@ This repository holds all code relevant to the bachelor thesis by Sebastian Mai 
 
 ## Time Plan:
 
-| Timeplan Mai         | Task     | Finished |
-|--------------|-----------| -----------|
-| 1 - 12 |  Setting up sensors and the pi and testing the measurents for good plant responses | <ul><li>[ ] yes </li><li>[x] no</li></ul> |
-| 13 - 19 | Do proper plant test and try to fix the measurement / make adjustment to the stimuli so that a somewhat consistent change is visible | <ul><li>[ ] yes </li><li>[x] no</li></ul> |
-| 20 - 26 | Fix preprocessing start with the creation of a testing set that I can use to look into shapelets | <ul><li>[ ] yes </li><li>[x] no</li></ul> |
-| 27 - 2 | Code the shapelets and start with experiments to gain the actual dataset | <ul><li>[ ] yes </li><li>[x] no</li></ul> |
+| Timeplan Mai | Task                                                                                     | Finished                                  |
+|--------------|------------------------------------------------------------------------------------------|-------------------------------------------|
+| 1 - 14       | Setting up the pi and the sensors. Debugging sensors                                     | <ul><li>[x] yes </li><li>[] no</li></ul> |
+| 15 - 23      | Testing stimuli reactions of the plant                                                   | <ul><li>[ ] yes </li><li>[x] no</li></ul> |
+| 24 - 8       | Get data for single stimulus. 3 plants simultanously for 3 days max and then switch them | <ul><li>[ ] yes </li><li>[x] no</li></ul> |
 
 
-| Timeplan Juni         | Task     | Finished |
-|--------------|-----------| -----------|
-| 3 - 30 | Dataset creation for stimuli combinations | <ul><li>[ ] yes </li><li>[x] no</li></ul> |
-| 3 - 30 | Prepare the neural network as well as refine the shapelets | <ul><li>[ ] yes </li><li>[x] no</li></ul> |
+| Timeplan Juni | Task     | Finished |
+|---------------|-----------| -----------|
+| 9 - 30        | Dataset creation for stimuli combinations | <ul><li>[ ] yes </li><li>[x] no</li></ul> |
 
 
 | Timeplan Juli         | Task     | Finished |
