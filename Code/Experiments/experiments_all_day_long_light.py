@@ -16,13 +16,13 @@ async def main():
     while (True):
         current_time = datetime.now()
 
-        if wait_time + timedelta(minutes=10) < current_time <= wait_time + timedelta(minutes=20):
+        if wait_time + timedelta(minutes=1) < current_time <= wait_time + timedelta(minutes=2):
             await growLight.turn_on()
-        elif wait_time + timedelta(minutes=20) < current_time < (
-                wait_time + timedelta(minutes=30)):
+        elif wait_time + timedelta(minutes=2) < current_time < (
+                wait_time + timedelta(minutes=3)):
             await growLight.turn_off()
 
-        if current_time >= (wait_time + timedelta(minutes=30)):
+        if current_time >= (wait_time + timedelta(minutes=3)):
             break
         '''
         if 8 <= current_time.hour <= 22:

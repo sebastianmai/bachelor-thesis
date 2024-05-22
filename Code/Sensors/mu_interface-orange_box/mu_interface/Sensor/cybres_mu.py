@@ -133,7 +133,7 @@ class Cybres_MU:
     def set_eis(self):
         # self.ser.write(b",y11")                  # TIA amplification gain
         self.ser.write(b",yw2*")                   # 3 - single channel, 2 - both channel
-
+        self.ser.write(b",mt4*")
         # Allows to set the measurement mode
         # 0 - Off
         # 1 - Impedance spectroscopy (Allows for upper and lower limit to be set)

@@ -89,6 +89,7 @@ class Sensor_Node:
             # Get the next data set.
             next_line = self.mu.get_next()
             header, payload = self.classify_message(next_line)
+            logging.info(payload)
 
             # Send data to Edge device via ZMQ if it's valid.
             if header is not None:

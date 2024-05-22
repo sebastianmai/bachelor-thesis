@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 import pandas as pd
 import os
 import time
+import csv
 
 scaling_factors = {
     "temp-external": lambda t: t / 10000,
@@ -18,8 +19,13 @@ scaling_factors = {
     "soil_temperature": lambda t: t / 10
 }
 
+path = '/home/basti/Measurements'
+
 async def main():
+
     WP03 = "134.34.225.167"  # 70-4F-57-FF-AE-F5
+
+    #WP00 = "134.34.225.132"
     plug = WP03
     growLight = SmartPlug(plug)
     await growLight.turn_off()
@@ -39,6 +45,30 @@ async def main():
             (18, 50),
         ]
 
+        current_time = datetime.now()
+
+        if wait_time + timedelta(hours=1) < current_time <= wait_time + timedelta(hours=3):
+            print("stimulus started")
+            current_temp = get_temp(-1)
+
+            if current_temp[2] <= start_temp[2] + 7:
+                await growLight.turn_on()
+                log_state_change('on')
+                time.sleep(3)
+            elif current_temp[2] > start_temp[2] + 7:
+                await growLight.turn_off()
+                log_state_change('off')
+                time.sleep(3)
+        elif wait_time + timedelta(hours=3) < current_time <= wait_time + timedelta(hours=4):
+            print("turned off")
+            await growLight.turn_off()
+
+        if current_time >= (wait_time + timedelta(hours=4)):
+            print('Broken')
+            break
+
+
+        '''
         for hour, minute in specific_times:
             if current_time.hour == hour and minute == current_time.minute:
                 print('Time found')
@@ -65,7 +95,7 @@ async def main():
                         print('Broken')
                         break
 
-                print('Searching')
+                print('Searching')'''
 
     '''while (True):
 
@@ -134,6 +164,12 @@ def get_temp(position):
     last_temp_T2_air = temp["T2_air"].iloc[position]
 
     return (last_temp_T1_leaf, last_temp_T1_air, last_temp_T2_leaf, last_temp_T2_air)
+
+def log_state_change(state):
+    filename = os.path.join(path, 'state_changes.csv')
+    with open(filename, 'a', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow([datetime.now(), state])
 
 if __name__ == '__main__':
     asyncio.run(main())

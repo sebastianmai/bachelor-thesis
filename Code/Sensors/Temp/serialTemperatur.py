@@ -9,13 +9,13 @@ def int_from_bytes(xbytes: bytes) -> int:
     return int.from_bytes(xbytes, 'big')
 
 
-directory = '/home/pi/Measurements/'  # directory to store the data in
+directory = '/home/basti/Measurements/'  # directory to store the data in
 last_csv_time = datetime.now()   # get the starting temperature
 
 if not os.path.exists(directory):
     os.makedirs(directory)
 
-serial_ports = glob.glob("/dev/ttyACM3")  # finding all serial ports with the name /dev/ttyACM
+serial_ports = glob.glob("/dev/ttyACM1")  # finding all serial ports with the name /dev/ttyACM
 
 serial_instances = {}  # storing the serial instances
 
