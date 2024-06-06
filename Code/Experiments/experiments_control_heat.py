@@ -19,7 +19,7 @@ scaling_factors = {
     "soil_temperature": lambda t: t / 10
 }
 
-path = '/home/basti/Measurements'
+path = '/home/pi/Measurements'
 
 async def main():
 
@@ -30,7 +30,7 @@ async def main():
     growLight = SmartPlug(plug)
     await growLight.turn_off()
 
-    wait_time = datetime.now()
+    #wait_time = datetime.now()
     start_temp = get_temp(0)
 
     while True:
@@ -44,10 +44,7 @@ async def main():
             (16, 40),
             (18, 50),
         ]
-
-        current_time = datetime.now()
-
-        if wait_time + timedelta(hours=1) < current_time <= wait_time + timedelta(hours=3):
+        '''if wait_time + timedelta(hours=1) < current_time <= wait_time + timedelta(hours=3):
             print("stimulus started")
             current_temp = get_temp(-1)
 
@@ -65,10 +62,11 @@ async def main():
 
         if current_time >= (wait_time + timedelta(hours=4)):
             print('Broken')
-            break
+            break'''
 
 
-        '''
+
+control_heat
         for hour, minute in specific_times:
             if current_time.hour == hour and minute == current_time.minute:
                 print('Time found')
@@ -81,10 +79,10 @@ async def main():
                     if wait_time + timedelta(minutes=60) < current_time <= wait_time + timedelta(hours=1, minutes=10):
                         current_temp = get_temp(-1)
 
-                        if current_temp[2] <= start_temp[2] + 6:
+                        if current_temp <= start_temp + 6:
                             await growLight.turn_on()
                             time.sleep(3)
-                        elif current_temp[2] <= start_temp[2] + 6:
+                        elif current_temp <= start_temp + 6:
                             await growLight.turn_off()
                             time.sleep(3)
                     elif wait_time + timedelta(hours=1, minutes=10) < current_time <= (
@@ -95,7 +93,7 @@ async def main():
                         print('Broken')
                         break
 
-                print('Searching')'''
+                print('Searching')
 
     '''while (True):
 
@@ -151,19 +149,24 @@ async def main():
 
 
 def get_temp(position):
-    folder_path = '/home/pi/Measurements/P6'
+    folder_path = '/home/pi/measurements/'
     files = os.listdir(folder_path)
     full_name = [os.path.join(folder_path, file) for file in files]
     sorted_files = sorted(full_name, key=os.path.getmtime, reverse=True)
     temp = pd.read_csv(sorted_files[0])
 
+    temp["temp_external"] = scaling_factors["temp_external"](temp["temp_external"])
+    last_temp = temp["temp_external"].iloc[position]
+
+    return last_temp
+
     #data_cybres["temp_external"] = scaling_factors["temp_external"](data_cybres["temp_external"])
-    last_temp_T1_leaf = temp["T1_leaf"].iloc[position]
+    '''last_temp_T1_leaf = temp["T1_leaf"].iloc[position]
     last_temp_T2_leaf = temp["T2_leaf"].iloc[position]
     last_temp_T1_air = temp["T1_air"].iloc[position]
     last_temp_T2_air = temp["T2_air"].iloc[position]
 
-    return (last_temp_T1_leaf, last_temp_T1_air, last_temp_T2_leaf, last_temp_T2_air)
+    return (last_temp_T1_leaf, last_temp_T1_air, last_temp_T2_leaf, last_temp_T2_air)'''
 
 def log_state_change(state):
     filename = os.path.join(path, 'state_changes.csv')

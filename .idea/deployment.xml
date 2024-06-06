@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="PI00" remoteFilesAllowedToDisappearOnAutoupload="false">
+  <component name="PublishConfigData" serverName="PI03" remoteFilesAllowedToDisappearOnAutoupload="false">
     <serverData>
       <paths name="PI00">
         <serverdata>
           <mappings>
             <mapping deploy="/" local="$PROJECT_DIR$/Code" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="PI03">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>

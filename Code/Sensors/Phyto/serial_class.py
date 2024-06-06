@@ -15,10 +15,11 @@ class PhytNode_Serial:
             timeout (int): timeout of the serial connection
         """
         self.ser = serial.Serial(port, baudrate, timeout=timeout, parity=parity)
+        print("connected to: ", self.ser.name)
         self.ser.flushInput()  # Clear any existing data in the input buffer
         self.wrong_data_counter = 0
 
-        self.directory = '/home/pi/Measurements/'
+        self.directory = '/home/basti/Measurements/'
         self.device_no = None
 
         while not self.read():
@@ -51,10 +52,12 @@ class PhytNode_Serial:
         Args:
         """
         data = self.ser.readline()
+        print(data)
         if (len(data) == 0 or len(data) != 6 or data[0] != 80): # check if data is correct
             # print(self.file_prefix+ " " + datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f")[:-3], "not correct", data)
             self.wrong_data_counter += 1
             self.ser.flushInput()
+            print(self.wrong_data_counter)
             return None
         self.device_no = data[1]
         data = (self.int_from_bytes(data[2:-1]), 0)
@@ -62,7 +65,7 @@ class PhytNode_Serial:
 
     def getVolt(self, data):
         Vref = 2.5
-        Gain = 2
+        Gain = 4
         databits = 8388608
 
         volt = data / databits - 1
@@ -92,7 +95,7 @@ class PhytNode_Serial:
             if os.path.getsize(self.file_path) == 0:
                 writer.writerow(self.header)
 
-            writer.writerow([saved_time, data, 0])
+            writer.writerow([saved_time, self.getVolt(data[0]), 0])
 
     def write2csv_thread(self)->None:
         """

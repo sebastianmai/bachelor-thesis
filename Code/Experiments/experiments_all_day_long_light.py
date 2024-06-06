@@ -15,17 +15,17 @@ async def main():
 
     while (True):
         current_time = datetime.now()
-
-        if wait_time + timedelta(minutes=1) < current_time <= wait_time + timedelta(minutes=2):
+        if wait_time + timedelta(hours=1) < current_time <= wait_time + timedelta(hours=1, minutes=30):
             await growLight.turn_on()
-        elif wait_time + timedelta(minutes=2) < current_time < (
-                wait_time + timedelta(minutes=3)):
+        elif wait_time + timedelta(hours=1, minutes=30) < current_time < (wait_time + timedelta(hours=2, minutes=30)):
             await growLight.turn_off()
 
-        if current_time >= (wait_time + timedelta(minutes=3)):
-            break
-        '''
-        if 8 <= current_time.hour <= 22:
+        if current_time >= (wait_time + timedelta(hours=2, minutes=30)):
+            print("new experiment")
+            print(datetime.now())
+            wait_time = datetime.now()
+
+        '''if 8 <= current_time.hour <= 22:
 
             specific_times = [
                 (8, 0),
@@ -45,14 +45,13 @@ async def main():
                         current_time = datetime.now()
 
                         if wait_time + timedelta(minutes=60) < current_time <= wait_time + timedelta(hours=1, minutes=10):
-                            growLight.turn_on()
+                            await growLight.turn_on()
                         elif wait_time + timedelta(hours=1, minutes=10) < current_time < (
                                 wait_time + timedelta(hours=2, minutes=10)):
-                            growLight.turn_off()
+                            await growLight.turn_off()
 
                         if current_time >= (wait_time + timedelta(hours=2, minutes=10)):
-                            break
-            '''
+                            break'''
 
 
 if __name__ == '__main__':
